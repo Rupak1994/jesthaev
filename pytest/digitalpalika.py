@@ -13,11 +13,12 @@ def driver():
     yield driver
     driver.close()
 @pytest.mark.parametrize("username,password",[
-    ("TestQA","password"),#valid username and password
+    ("malikacounter5","password"),#valid username and password
     ("invalid","password"),#invaid username and password
+    ("ram","test123")#invalid username and password
                            ])
 def test_login(driver,username,password):
-    driver.get("https://sagar-test-qa.vercel.app/")
+    driver.get("https://tax.digitalpalika.org/login/")
     username_field= driver.find_element(By.XPATH,"//input[@id='username']")
     password_field= driver.find_element(By.XPATH,"//input[@id='password']")
     login_btn= driver.find_element(By.XPATH,"//button[normalize-space()='Login']")
@@ -33,7 +34,7 @@ def test_login(driver,username,password):
     except:
         time.sleep(2)
         page_source=driver.page_source
-        if "Welcome to the Dashboard" in page_source:
+        if "Successfully login!" in page_source:
             print(f"login successful for {username}")
         else:
             print(f"unexpected error or login failed for {username}")
