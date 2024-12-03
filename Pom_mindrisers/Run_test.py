@@ -17,30 +17,31 @@ from Pom_mindrisers.mindrisers_module.successful_stories import success_story
 from Pom_mindrisers.mindrisers_module.blogs import Blogs
 from Pom_mindrisers.mindrisers_module.contact_us import contact_us
 from Pom_mindrisers.mindrisers_module.admission import admission
+from Pom_mindrisers.mindrisers_module.whatsapp_chat import chat
 
 
-@pytest.fixture(params=["chrome", "firefox", "edge"])
-def driver(request):
-    browser = request.param
-    if browser == "chrome":
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    elif browser == "firefox":
-        driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-    elif browser == "edge":
-        driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-    else:
-        raise ValueError(f"Unsupported browser: {browser}")
-
-    driver.implicitly_wait(2)
-    yield driver
-    driver.quit()
-
-# @pytest.fixture()
-# def driver():
-#     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+# @pytest.fixture(params=["edge", "chrome", "firefox" ])
+# def driver(request):
+#     browser = request.param
+#     if browser == "chrome":
+#         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+#     elif browser == "firefox":
+#         driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+#     elif browser == "edge":
+#         driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+#     else:
+#         raise ValueError(f"Unsupported browser: {browser}")
+#
 #     driver.implicitly_wait(2)
 #     yield driver
-#     driver.close()
+#     driver.quit()
+
+@pytest.fixture()
+def driver():
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    driver.implicitly_wait(2)
+    yield driver
+    driver.close()
 
 # for edge browser
 # def driver():
@@ -72,7 +73,10 @@ def test_ourcouses(driver):
     ourcourses.Open_ourcoursespage("https://www.mindrisers.com.np/courses")
     driver.maximize_window()
     time.sleep(2)
-    ourcourses.scroll_page(driver)
+    ourcourses.search_courses("QUALITY ASSURANCE")
+    time.sleep(2)
+    ourcourses.click_search()
+    time.sleep(2)
 
 # test for post +2 courses
 def test_postcourses(driver):
@@ -139,7 +143,7 @@ def test_admission(driver):
     time.sleep(1)
     Admission.enter_phone("9800000000")
     time.sleep(1)
-    Admission.enter_college("kcc")
+    Admission.enter_college("test12")
     time.sleep(1)
     Admission.select_academic_status("Bachelor Completed/Running")
     time.sleep(1)
@@ -153,3 +157,18 @@ def test_admission(driver):
     time.sleep(2)
     # Admission.submit_form()
     # time.sleep(1)
+
+# test for whatsapp chat
+def test_whatsapp_chat(driver):
+    Chat = chat(driver)
+    Chat.open_page("https://www.mindrisers.com.np/")
+    driver.maximize_window()
+    time.sleep(2)
+    Chat.open_chat()
+    time.sleep(2)
+    Chat.start_chat("info on qa")
+    time.sleep(2)
+    Chat.send_message()
+    time.sleep(2)
+
+

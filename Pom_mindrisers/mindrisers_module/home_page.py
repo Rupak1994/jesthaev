@@ -19,4 +19,8 @@ class Homepage:
             time.sleep(0.1)
 
     def static_image(self):
-        self.driver.find_element(*self.close_img).click()
+        # self.driver.find_element(*self.close_img).click()
+        try:
+            self.driver.find_element(*self.close_img).click()
+        finally:
+             return False
